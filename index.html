@@ -1,37 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app="devMtIn">
 
 <head>
   <link href='https://fonts.googleapis.com/css?family=Raleway:400,500,700,600' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="css/styles3.css">
-	<meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1"> 
-	<title>DevMtin</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DevMtin</title>
 </head>
 
-<body>
-	<div class="l-header">
-		<h1>Your Name</h1>
-	</div>
-  
-  <div class="wrapper">  
+<body ng-controller="homeCtrl">
+  <div class="l-header">
+    <h1><!-- What you've just done in the above step is called data binding, we are binding the information inside of our controller to our view using the handlebars (`{{ }}`) notation. This binding can handle more than just displaying static data, it can also process simple evaluations. -->
+    {{ myProfile.name || 'Your Name' }}</h1>
+  </div>
+
+  <div class="wrapper">
     <div>
       <h2>Profile</h2>
-      <button class="l-btn l-btn-main">Editing :</button>
+      <button class="l-btn l-btn-main" ng-click="editing = !editing"><span ng-show="!editing">Edit:</span><span ng-hide="!editing">Editing:</span></button>
     </div>
 
-    <div>      
+    <div>
 
-      <input id="name" type="text" placeholder="Your Name">
+      <input id="name" type="text" ng-disabled="!editing" placeholder="Your Name" ng-model="myProfile.name">
       <br />
 
-      <input id="likes" type="text" placeholder="Likes">
+      <input id="likes" type="text" ng-disabled="!editing" placeholder="Likes" ng-model="myProfile.likes">
       <br />
 
-      <input id="favColor" type="text" placeholder="Favorite Color">
+      <input id="favColor" type="text" ng-disabled="!editing" placeholder="Favorite Color" ng-model="myProfile.color">
       <br />
-      <button class="l-btn l-btn-success">Save</button>
-      <button class="l-btn l-btn-danger">Delete</button>
+      <button ng-click="saveProfile(myProfile)"class="l-btn l-btn-success">Save</button>
+      <button ng-click="deleteProfile()" class="l-btn l-btn-danger">Delete</button>
     </div>
   </div>
 
@@ -39,32 +40,43 @@
     <h2>Friends</h2>
 
     <button class="l-btn l-btn-main">Go</button>
-    <input type="text" placeholder="Find Friends">    
-    <div class="friendList">
+    <input type="text" placeholder="Find Friends" ng-model="findFriend.name">
+    <select ng-model="sortReverse" ng-options="option.value as option.display for option in sortOptions">
+    </select>
+    <div class="friendList" ng-repeat="friend in myProfile.friends | filter: findFriend.name | orderBy: 'name' : sortReverse">
       <span class="closeBtn"></span>
-        My Friends
-      <br />
+      {{ friend.name }}
+      <br>
       <div class="secondConnection friendList">
         My Second Connections
       </div>
     </div>
   </div>
-  
-	<div id="myModalMask">
-		<div id="myModal">
-			<div>
-				<div class="modalTitle">
-				<span class="closeBtn"></span>
-					Add Friends
-				</div>
-					<br />
-				<div class="friendList">
-					<span class="friend"></span> Potential Friends
-				</div>
-			</div>
-		</div>
-	</div>
-  
+
+  <div id="myModalMask">
+    <div id="myModal">
+      <div>
+        <div class="modalTitle">
+          <span class="closeBtn"></span>
+          Add Friends
+        </div>
+        <br />
+        <div class="friendList">
+          <span class="friend"></span> Potential Friends
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script src ="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.0/angular.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/homeCtrl.js"></script>
+  <script src="js/profileService.js"></script>
+
+  </script>
+
+  </script>
 </body>
 
 </html>
